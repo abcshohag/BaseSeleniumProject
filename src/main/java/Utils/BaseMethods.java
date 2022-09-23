@@ -19,9 +19,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestResult;
 import org.testng.Reporter;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.Parameters;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -40,7 +38,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-public class BaseMethod extends DriverUtils {
+public class BaseMethods {
     public Robot re;
     public Select se;
     public Actions ac;
@@ -55,7 +53,7 @@ public class BaseMethod extends DriverUtils {
         }
     }
 
-    public BaseMethod() {
+    public BaseMethods() {
         driver = getWebDriver();
         try {
             re = new Robot();
@@ -373,11 +371,11 @@ public class BaseMethod extends DriverUtils {
 
 
     /* To click a certain Web Element using DOM/ JavaScript Executor */
-    public void javaScriptExecutorClick(WebElement element) {
+    public void clickUsingJS(WebElement element) {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(); return arguments[0].click();", element);
     }
 
-    public void javaScriptExecutorClick(By locator) {
+    public void clickUsingJS(By locator) {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(); return arguments[0].click();", driver.findElement(locator));
     }
 
@@ -534,7 +532,7 @@ public class BaseMethod extends DriverUtils {
         }
         prop = new Properties();
         try {
-            FileInputStream ip = new FileInputStream("demoqa.properties");
+            FileInputStream ip = new FileInputStream("project.properties");
             prop.load(ip);
         } catch (Exception e) {
             System.out.println("Exception occurred during config initialization. " + e.getMessage());
@@ -544,12 +542,7 @@ public class BaseMethod extends DriverUtils {
     }
 
     public static void storeProperties(Properties property) throws IOException {
-        property.store(new FileOutputStream("demoqa.properties"), null);
-    }
-
-    public void clickUsingJS(WebElement element) {
-        JavascriptExecutor executor = (JavascriptExecutor) driver;
-        executor.executeScript("arguments[0].click();", element);
+        property.store(new FileOutputStream("project.properties"), null);
     }
 
     //pass a value between 1 to 100 denoting percentage.
@@ -557,7 +550,6 @@ public class BaseMethod extends DriverUtils {
         JavascriptExecutor executor = (JavascriptExecutor) driver;
         executor.executeScript("document.body.style.zoom = '" + percentage + "'");
     }
-
 
     public void scrollToElementAndClick(By selector) {
         ac.moveToElement(driver.findElement(selector)).click().build().perform();
